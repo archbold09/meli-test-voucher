@@ -1,0 +1,33 @@
+{
+  "name": "meli-test-voucher",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node-dev src/server.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/archbold09/meli-test-voucher.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/archbold09/meli-test-voucher/issues"
+  },
+  "homepage": "https://github.com/archbold09/meli-test-voucher#readme",
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/node": "^18.6.3",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "axios": "^0.27.2",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1"
+  }
+}
