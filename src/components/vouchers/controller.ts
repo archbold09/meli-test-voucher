@@ -7,14 +7,17 @@ class Vouchers {
   getItemsWithVoucher(items: Array<Product>, amount: number) {
     let totalToPay = 0;
 
-    const result = items
+    const result = [...new Set(items.map((item) => item.item_id))]
       .map((item) => {
-        if (totalToPay < amount) {
-          totalToPay += item.price;
-          if (totalToPay > amount) {
-            totalToPay -= item.price;
-          } else {
-            return item.item_id;
+        const product = items.findIndex((product) => product.item_id === item);
+        if (product) {
+          if (totalToPay < amount) {
+            totalToPay += items[product].price;
+            if (totalToPay > amount) {
+              totalToPay -= items[product].price;
+            } else {
+              return item;
+            }
           }
         }
       })
