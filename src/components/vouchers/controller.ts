@@ -1,20 +1,28 @@
+import boom from '@hapi/boom';
+
 interface Product {
   item_id: string;
-  price: number;
 }
 
 class Vouchers {
-  getItemsWithVoucher(items: Array<Product>, amount: number) {
+  async getItemsWithVoucher(items: Array<Product>, amount: number) {
+    const { getProducts } = require('./service');
+
+    const resultProducts = await getProducts(items);
+
+    if (!resultProducts.status) throw new Error('Error al obtener los datos de la API.');
+
     let totalToPay = 0;
 
-    const result = [...new Set(items.map((item) => item.item_id))]
+    const result = [...new Set(resultProducts.data.map((item: Product) => item.item_id))]
       .map((item) => {
-        const product = items.findIndex((product) => product.item_id === item);
+        const product = resultProducts.data.findIndex((product: Product) => product.item_id === item);
+
         if (product) {
           if (totalToPay < amount) {
-            totalToPay += items[product].price;
+            totalToPay += resultProducts.data[product].price;
             if (totalToPay > amount) {
-              totalToPay -= items[product].price;
+              totalToPay -= resultProducts.data[product].price;
             } else {
               return item;
             }
@@ -23,16 +31,12 @@ class Vouchers {
       })
       .filter((item) => item !== undefined);
 
-    if (result.length === 0) {
-      return {
-        canYouPay: false
-      };
-    }
+    if (result.length === 0) throw boom.notFound('Producto no encontrado');
 
     return {
-      canYouPay: true,
-      item_ids: result,
-      total: totalToPay
+      message: 'Productos descontados.',
+      status: true,
+      data: { item_ids: result, total: totalToPay }
     };
   }
 }

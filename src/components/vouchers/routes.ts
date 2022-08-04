@@ -1,15 +1,20 @@
-import express, { Request, Response } from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import voucherClass from './controller';
+import validatorHandler from '../../middlewares/validatorHandler';
+import { getProductsSchema } from './schema';
+
 const router = express.Router();
 
-router.post('/', (req: Request, res: Response) => {
-  const { item_ids, amount } = req.body;
+router.post('/', validatorHandler(getProductsSchema, 'body'), async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { item_ids, amount } = req.body;
 
-  const result = voucherClass.getItemsWithVoucher(item_ids, amount);
+    const result = await voucherClass.getItemsWithVoucher(item_ids, amount);
 
-  if (result.canYouPay === false) return res.status(404).send('404-NOT_FOUND');
-
-  res.status(200).json(result);
+    return res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
 });
 
 export default router;

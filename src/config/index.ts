@@ -6,6 +6,6 @@ export default {
     PORT: process.env.PORT
   },
   apiConfig: {
-    API_AVIONAPI: process.env.API_AVIONAPI
+    API_MERCADO_LIBRE: process.env.API_MERCADO_LIBRE
   }
 };
