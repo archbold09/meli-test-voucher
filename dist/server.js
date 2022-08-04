@@ -16,4 +16,4 @@ app.use(errorHandler_1.errorHandler);
 const server = app.listen(index_1.default.mainConfig.PORT, () => {
     console.log(`⚡️[server]: Server is running at http://localhost:${index_1.default.mainConfig.PORT}`);
 });
-exports.default = server;
+module.exports = { app, server };

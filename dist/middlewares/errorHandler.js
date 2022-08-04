@@ -9,8 +9,7 @@ exports.logErrors = logErrors;
 function errorHandler(error, _req, res, _next) {
     return res.status(500).json({
         statusCode: 500,
-        message: error.message,
-        stack: error.stack
+        message: error.message
     });
 }
 exports.errorHandler = errorHandler;

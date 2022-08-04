@@ -17,4 +17,4 @@ const server = app.listen(config.mainConfig.PORT, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${config.mainConfig.PORT}`);
 });
 
-export default server;
+module.exports = { app, server };

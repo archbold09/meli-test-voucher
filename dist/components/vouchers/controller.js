@@ -8,17 +8,19 @@ class Vouchers {
     async getItemsWithVoucher(items, amount) {
         const { getProducts } = require('./service');
         const resultProducts = await getProducts(items);
+        if (resultProducts.code === 'ERR_BAD_REQUEST')
+            throw new Error(resultProducts.response.data.message);
         if (!resultProducts.status)
             throw new Error('Error al obtener los datos de la API.');
         let totalToPay = 0;
-        const result = [...new Set(resultProducts.data.map((item) => item.item_id))]
+        const result = [...new Set(resultProducts.data.sort((first, second) => first.price - second.price).map((item) => item.item_id))]
             .map((item) => {
-            const product = resultProducts.data.findIndex((product) => product.item_id === item);
+            const product = resultProducts.data.find((product) => product.item_id === item);
             if (product) {
                 if (totalToPay < amount) {
-                    totalToPay += resultProducts.data[product].price;
+                    totalToPay += product.price;
                     if (totalToPay > amount) {
-                        totalToPay -= resultProducts.data[product].price;
+                        totalToPay -= product.price;
                     }
                     else {
                         return item;
@@ -32,7 +34,7 @@ class Vouchers {
         return {
             message: 'Productos descontados.',
             status: true,
-            data: { item_ids: result, total: totalToPay }
+            data: { item_ids: result, total: Number(totalToPay.toFixed(2)) }
         };
     }
 }
