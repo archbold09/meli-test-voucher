@@ -73,7 +73,7 @@ Dejo aqui algunos datos para realizar las pruebas de la API =>
 
 Respuesta 200 (Cuenta con el descuento suficiente para comprar minimo 1 producto)
 
-`curl --location --request POST 'http://localhost:8030/api/coupon' \--header 'Content-Type: application/json' \--data-raw '{"item_ids": ["MLA1144828035","MLA1130114231","MLA1130114231"],"amount": 500000}'`
+`curl --location --request POST 'http://35.208.44.162:8030/api/coupon' \--header 'Content-Type: application/json' \--data-raw '{"item_ids": ["MLA1144828035","MLA1130114231","MLA1130114231"],"amount": 500000}'`
 
 `
 {
@@ -88,7 +88,7 @@ Respuesta 200 (Cuenta con el descuento suficiente para comprar minimo 1 producto
 
 Respuesta 404 (No cuenta con el descuento suficiente para la compra minima de 1 producto)
 
-`curl --location --request POST 'http://localhost:8030/api/coupon' \--header 'Content-Type: application/json' \--data-raw '{"item_ids": ["MLA1144828035","MLA1130114231","MLA1130114231"],"amount": 500}'`
+`curl --location --request POST 'http://35.208.44.162:8030/api/coupon' \--header 'Content-Type: application/json' \--data-raw '{"item_ids": ["MLA1144828035","MLA1130114231","MLA1130114231"],"amount": 500}'`
 
 `
 {
@@ -100,3 +100,16 @@ Respuesta 404 (No cuenta con el descuento suficiente para la compra minima de 1 
     "amount": 500
 }
 `
+
+
+<!-- Deploy -->
+### 🌧️ Despliegue en servidor remoto
+
+Se uso una maquina virtual de GCP para subir el projecto y se mantiene activo con PM2 en la ruta.
+
+`http://35.208.44.162:8030`
+
+### 🌧️ Documentación
+`https://app.swaggerhub.com/apis-docs/angel791/meli_voucher/AA_MELI#/default/getProducts`
+
+<b>!!estará disponible hasta recibir el feedback!!</b>
