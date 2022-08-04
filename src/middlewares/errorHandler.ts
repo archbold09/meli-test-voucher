@@ -19,8 +19,7 @@ function logErrors(error: error, _req: Request, _res: Response, next: NextFuncti
 function errorHandler(error: error, _req: Request, res: Response, _next: NextFunction) {
   return res.status(500).json({
     statusCode: 500,
-    message: error.message,
-    stack: error.stack
+    message: error.message
   });
 }
 

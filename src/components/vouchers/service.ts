@@ -1,35 +1,36 @@
 import axios from 'axios';
 import config from '../../config/index';
+import boom from '@hapi/boom';
 
 const API = config.apiConfig.API_MERCADO_LIBRE;
 
 const getProducts = async (itemsId: Array<string>) => {
-  const stringIds: string = itemsId.join(',');
+  try {
+    const stringIds: string = itemsId.join(',');
 
-  const result = await axios({
-    method: 'GET',
-    url: `${API}/items?ids=${stringIds}`
-  });
+    const result = await axios({
+      method: 'GET',
+      url: `${API}/items?ids=${stringIds}`
+    });
 
-  if (result.status !== 200)
+    if (result.status !== 200) throw boom.badRequest('Error al conectar con la API');
+
     return {
-      status: false,
-      data: null
+      status: true,
+      data: result.data
+        .map((item: any) => {
+          if (item.code === 200) {
+            return {
+              item_id: item.body.id,
+              price: item.body.price
+            };
+          }
+        })
+        .filter((item: any) => item !== undefined)
     };
-
-  return {
-    status: true,
-    data: result.data
-      .map((item: any) => {
-        if (item.code === 200) {
-          return {
-            item_id: item.body.id,
-            price: item.body.price
-          };
-        }
-      })
-      .filter((item: any) => item !== undefined)
-  };
+  } catch (error) {
+    return error;
+  }
 };
 
 module.exports = { getProducts };
